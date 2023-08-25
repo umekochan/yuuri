@@ -1,0 +1,8 @@
+# bootstrapディレクトリ以下を除外
+bootstrap/
+
+# imgディレクトリ以下を除外
+img/
+
+# ゴーストファイルを除外
+.DS_Stone
