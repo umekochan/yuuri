@@ -8,6 +8,10 @@ add_action( 'after_setup_theme', 'setup_my_theme');
 
 //ログイン関数
 function login_init() {
+    //ログインページからのアクセスでなければ関数を終了する
+    if ( ! is_page( 'login' ) ) {
+        return;
+    }
 
     //変数$errorのグローバル宣言
     global $error;
