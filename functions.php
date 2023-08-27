@@ -9,7 +9,7 @@ add_action( 'after_setup_theme', 'setup_my_theme');
 //ログイン関数
 function login_init() {
     //ログインページからのアクセスでなければ関数を終了する
-    if ( ! is_page( 'login' ) ) {
+    if ( !is_page( 'login' ) ) {
         return;
     }
 
@@ -19,21 +19,21 @@ function login_init() {
     $br ="<br/>";
 
     //メールアドレスのチェック
-    if ( ! empty( $_POST['user_email'] ) ) {
+    if ( !empty( $_POST['user_email'] ) ) {
         $email = $_POST['user_email'];
     } else {
         $error .= "メールアドレスを入力してください{$br}";
     }
 
     //パスワードのチェック
-    if ( ! empty( $_POST['user_pass'] ) ) {
+    if ( !empty( $_POST['user_pass'] ) ) {
         $password = $_POST['user_pass'];
     } else {
         $error .= "パスワードを入力してください{$br}";
     }
 
     //エラーが無ければログイン処理へ進む
-    if ( ! $error ) {
+    if ( !$error ) {
         //ユーザー情報の取得
         $user = get_user_by( 'email', $email );
 
@@ -62,6 +62,7 @@ function login_init() {
             //ログイン成功時の処理
             } else {
                 //ホーム画面へリダイレクト
+                echo "ログインしました。";
                 wp_safe_redirect( home_url() );
             }
         }
