@@ -70,4 +70,50 @@ function login_init() {
 }
 add_action( 'template_redirect', 'login_init' );
 
+//投稿処理の関数
+function post_init() {
+    //投稿ページでないなら実行を終える
+    if( !is_page('post') ){
+        return;
+    }
+
+    global $post_error;
+    $post_error = array();
+
+    //入力チェック
+    if( empty( $_POST['title'] ) ){
+        $post_error['title'] = "タイトルが入力されていません";
+    }
+    if( empty( $_POST['content'] ) ){
+        $post_error['content'] = "本文が入力されていません";
+    }
+
+    //問題があれば終了
+    if( !empty($post_error) ){
+        return;    
+    }
+
+    //投稿データの作成
+    $new_post = array(
+        'post_title' => $_POST['title'],
+        'post_content' => $_POST['content'],
+        'post_status' => 'publish',
+        'post_date' => date('Y-m-d h:m:s'),
+        'post_author' => get_current_user_id(),
+        'post_type' => 'post',
+    );
+
+    //投稿を実行
+    $post_id = wp_insert_post($new_post, true);
+
+    //debug
+    $post_error['id'] = $post_id;
+
+    //エラー処理
+    if( is_wp_error($post_id) ){
+        $post_error['wp_error'] = $post_id->errors;
+    }
+}
+add_action( 'template_redirect', 'post_init' );
+
 ?>

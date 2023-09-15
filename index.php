@@ -1,6 +1,7 @@
 <?php get_header(); ?>
 <main>
     <h1>投稿一覧</h1>
+    <p><a href="/post/">投稿フォーム</a></p>
     <?php if( have_posts() ): ?>
         <?php while( have_posts() ): the_post(); ?>
             <hr>
