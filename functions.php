@@ -70,6 +70,30 @@ function login_init() {
 }
 add_action( 'template_redirect', 'login_init' );
 
+function logout_init() {
+    //ログアウトページでなければ終了
+    if( !is_page('logout') ){
+        return;
+    }
+
+    //ゲットメソッドが使われていなければ終了
+    if( empty($_GET) ){
+        return;
+    }
+
+    //ログアウトしないならTOPにリダイレクト
+    if( $_GET['logout'] === 'n' ){
+        wp_safe_redirect('/');
+        exit;
+    }
+
+    //ログアウト処理
+    if( $_GET['logout'] === 'y' ) {
+        
+    }
+}
+add_action( 'template_redirect', 'logout_init' );
+
 //投稿処理の関数
 function post_init() {
     //投稿ページでないなら実行を終える
