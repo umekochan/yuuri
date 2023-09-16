@@ -85,16 +85,51 @@ function logout_init() {
 
     //GET['action']にlogoutが登録されていればログアウトする
     if( isset($_GET['action']) and $_GET['action'] === 'logout' ) {
+        
+        //グローバル変数宣言
+        global $logged_user_id;
+
+        //ログアウトしたユーザーを取得（ログアウトした直後であることを示すフラグとする）
+        $logged_user_id = get_current_user_id();
+        
         //ログアウト実行
         wp_logout();
-
-        //トップに遷移
-        wp_safe_redirect( esc_url( home_url('/') ) );
-        exit;
     }
 
 }
 add_action( 'template_redirect', 'logout_init' );
+
+function logged_out_event($template) {
+
+    //ログアウトページでなければ終了
+    if( is_page( '/logout' ) ){
+        return $template;
+    }
+
+    
+    //GET['action']にlogoutが登録されている
+    if( isset($_GET['action']) and $_GET['action'] === 'logout' ){
+    }
+
+    //グローバル変数宣言
+    global $logged_user_id;
+    
+    //ログアウトユーザーの値がある
+    if( isset($logged_user_id) ){
+        //読み込むテンプレートを確認
+        $after_template = locate_template( array('page-logout_after.php') ); 
+        
+        if( isset($after_template) ) {
+            //読み込むテンプレートを変更
+            $template = $after_template;
+            //ログアウトフラグを解除
+            $logged_user_id = null;
+        }
+
+    }
+    return $template;
+}
+add_action( 'template_include', 'logged_out_event' );
 
 //投稿処理の関数
 function post_init() {
