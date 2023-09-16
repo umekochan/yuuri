@@ -139,14 +139,15 @@ function post_init() {
     }
 
     global $post_error;
-    $post_error = array();
+    $post_error = "";
+    $br ="<br/>";
 
     //入力チェック
     if( empty( $_POST['title'] ) ){
-        $post_error['title'] = "タイトルが入力されていません";
+        $post_error .= "タイトルが入力されていません{$br}";
     }
     if( empty( $_POST['content'] ) ){
-        $post_error['content'] = "本文が入力されていません";
+        $post_error .= "本文が入力されていません{$br}";
     }
 
     //問題があれば終了
@@ -172,7 +173,7 @@ function post_init() {
 
     //エラー処理
     if( is_wp_error($post_id) ){
-        $post_error['wp_error'] = $post_id->errors;
+        $post_error = $post_id->errors;
     }
 }
 add_action( 'template_redirect', 'post_init' );
