@@ -71,26 +71,28 @@ function login_init() {
 add_action( 'template_redirect', 'login_init' );
 
 function logout_init() {
+
     //ログアウトページでなければ終了
     if( !is_page('logout') ){
         return;
     }
 
-    //ゲットメソッドが使われていなければ終了
-    if( empty($_GET) ){
-        return;
-    }
-
-    //ログアウトしないならTOPにリダイレクト
-    if( $_GET['logout'] === 'n' ){
-        wp_safe_redirect('/');
+    //ログインしていないならログインページに遷移
+    if( !is_user_logged_in() ){
+        wp_safe_redirect('/login');
         exit;
     }
 
-    //ログアウト処理
-    if( $_GET['logout'] === 'y' ) {
-        
+    //GET['action']にlogoutが登録されていればログアウトする
+    if( isset($_GET['action']) and $_GET['action'] === 'logout' ) {
+        //ログアウト実行
+        wp_logout();
+
+        //トップに遷移
+        wp_safe_redirect( esc_url( home_url('/') ) );
+        exit;
     }
+
 }
 add_action( 'template_redirect', 'logout_init' );
 
