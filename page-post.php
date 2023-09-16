@@ -1,7 +1,6 @@
 <?php get_header(); ?>
 <main>
     <h1>投稿フォーム</h1>
-    <?php global $post_error; var_dump($post_error); ?>
     <form action="<?php the_permalink(); ?>" method="post">
         <div class="title-wrap">
             <label for="title">タイトル</label>
