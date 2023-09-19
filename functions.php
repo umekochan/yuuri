@@ -91,7 +91,7 @@ function logout_init() {
 
         //ログアウトしたユーザーを取得（ログアウトした直後であることを示すフラグとする）
         $logged_user_id = get_current_user_id();
-        
+
         //ログアウト実行
         wp_logout();
     }
@@ -101,31 +101,30 @@ add_action( 'template_redirect', 'logout_init' );
 
 function logged_out_event($template) {
 
-    //ログアウトページでなければ終了
+   
     if( is_page( '/logout' ) ){
         return $template;
     }
 
-    
     //GET['action']にlogoutが登録されている
     if( isset($_GET['action']) and $_GET['action'] === 'logout' ){
-    }
 
-    //グローバル変数宣言
-    global $logged_user_id;
-    
-    //ログアウトユーザーの値がある
-    if( isset($logged_user_id) ){
-        //読み込むテンプレートを確認
-        $after_template = locate_template( array('page-logout_after.php') ); 
+        //グローバル変数宣言
+        global $logged_user_id;
         
-        if( isset($after_template) ) {
-            //読み込むテンプレートを変更
-            $template = $after_template;
-            //ログアウトフラグを解除
-            $logged_user_id = null;
-        }
+        //ログアウトユーザーの値がある
+        if( isset($logged_user_id) ){
 
+            //読み込むテンプレートを確認
+            $after_template = locate_template( array('page-logout_after.php') ); 
+            
+            if( isset($after_template) ) {
+                //読み込むテンプレートを変更
+                $template = $after_template;
+                //ログアウトフラグを解除
+                $logged_user_id = null;
+            }
+        }
     }
     return $template;
 }
@@ -139,15 +138,14 @@ function post_init() {
     }
 
     global $post_error;
-    $post_error = "";
-    $br ="<br/>";
+    $post_error = '';
 
     //入力チェック
     if( empty( $_POST['title'] ) ){
-        $post_error .= "タイトルが入力されていません{$br}";
+        $post_error .= "タイトルが入力されていません";
     }
     if( empty( $_POST['content'] ) ){
-        $post_error .= "本文が入力されていません{$br}";
+        $post_error .= "本文が入力されていません";
     }
 
     //問題があれば終了
@@ -169,12 +167,12 @@ function post_init() {
     $post_id = wp_insert_post($new_post, true);
 
     //debug
-    $post_error['id'] = $post_id;
+    // $post_error['id'] = $post_id;
 
     //エラー処理
-    if( is_wp_error($post_id) ){
-        $post_error = $post_id->errors;
-    }
+//     if( is_wp_error($post_id) ){
+//         $post_error['wp_error'] = $post_id->errors;
+    // }
 }
 add_action( 'template_redirect', 'post_init' );
 
