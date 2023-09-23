@@ -178,4 +178,18 @@ function post_init() {
 }
 add_action( 'template_redirect', 'post_init' );
 
+function user_edit_init() {
+    //ユーザー情報編集ページでなければ実行を終える
+    if( !is_page('user-edit') ){
+        return;
+    }
+
+    //ポストされていない状態でアクセスされた時
+    if( empty($_POST) ){
+        global $edit_user;
+        $edit_user = wp_get_current_user();
+    }
+}
+add_action( 'template_redirect', 'user_edit_init' );
+
 ?>
