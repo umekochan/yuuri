@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php wp_head(); ?>
-</head>
-<body>
-<header>HEADER</header>
+<?php get_header(); ?>
 <main>
     <h1>ログイン</h1>
     <form action="<?php the_permalink(); ?>" method="post">
@@ -21,7 +13,4 @@
         <button type="submit">ログイン</button>
     </form>
 </main>
-<footer>FOOTER</footer>
-<?php wp_footer(); ?>
-</body>
-</html>
+<?php get_footer(); ?>
