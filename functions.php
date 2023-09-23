@@ -183,11 +183,10 @@ function user_edit_init() {
     if( !is_page('user-edit') ){
         return;
     }
-
-    //ポストされていない状態でアクセスされた時
-    if( empty($_POST) ){
-        global $edit_user;
-        $edit_user = wp_get_current_user();
+    
+    if( !is_user_logged_in() ){
+        wp_safe_redirect( '/login' );
+        exit;
     }
 }
 add_action( 'template_redirect', 'user_edit_init' );
