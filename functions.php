@@ -184,10 +184,42 @@ function user_edit_init() {
         return;
     }
     
+    //ログインしていなければログインにリダイレクト
     if( !is_user_logged_in() ){
         wp_safe_redirect( '/login' );
         exit;
     }
+
+    //何もPOSTされていなければ終了
+    if( empty($_POST['user_id']) ){
+        return;
+    }
+
+    //指定されたユーザーIDと現在ログインしているユーザーのIDが一致しなければ終了
+    if( (int)$_POST['user_id'] !== get_current_user_id() ){
+
+        //必要であればエラーメッセージ等を出力する
+
+        return;
+    }
+
+    //現在ログインしているユーザー情報を変数に保存
+    $user = wp_get_current_user();
+
+    //入力があった項目の値を変更する
+    if( !empty($_POST['update_name']) ){
+        $user->display_name = $_POST['update_name'];
+    }
+    if( !empty($_POST['update_pass']) ){
+        $user->user_pass = $_POST['update_pass'];
+    }
+    if( !empty($_POST['update_email']) ){
+        $user->user_email = $_POST['update_email'];
+    }
+
+    global $user_update_result;
+    $user_update_result = wp_update_user( $user );
+
 }
 add_action( 'template_redirect', 'user_edit_init' );
 
