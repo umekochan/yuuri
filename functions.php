@@ -180,12 +180,17 @@ add_action( 'template_redirect', 'post_init' );
 
 function user_register_init() {
     //投稿ページでないなら実行を終える
-    if( !is_page('user_register') ){
+    if( !is_page('register') ){
         return;
     }
 
     //既ログイン状態で新規登録はさせない
     if( is_user_logged_in() ){
+        return;
+    }
+
+    //POSTが無いなら実行しない
+    if( empty($_POST) ){
         return;
     }
 
@@ -195,16 +200,16 @@ function user_register_init() {
     $br = "<br>";
 
     //未入力チェック
-    if( !empty($_POST['register_id']) ){
+    if( empty($_POST['register_id']) ){
         $register_error .= "ユーザーIDが入力されていません{$br}";
     }
-    if( !empty($_POST['register_name']) ){
+    if( empty($_POST['register_name']) ){
         $register_error .= "ユーザー名が入力されていません{$br}";
     }
-    if( !empty($_POST['register_pass']) ){
+    if( empty($_POST['register_pass']) ){
         $register_error .= "パスワードが入力されていません{$br}";
     }
-    if( !empty($_POST['register_email']) ){
+    if( empty($_POST['register_email']) ){
         $register_error .= "メールアドレスが入力されていません{$br}";
     }
 
@@ -259,8 +264,9 @@ function user_register_init() {
     wp_signon( $login_user, false );
 
     //トップに移動させる
-    wp_safe_redirect( $home_url() );
+    wp_safe_redirect( home_url() );
     exit;
 }
+add_action( 'template_redirect', 'user_register_init' );
 
 ?>
