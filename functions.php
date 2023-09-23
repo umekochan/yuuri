@@ -178,4 +178,95 @@ function post_init() {
 }
 add_action( 'template_redirect', 'post_init' );
 
+function user_register_init() {
+    //投稿ページでないなら実行を終える
+    if( !is_page('register') ){
+        return;
+    }
+
+    //既ログイン状態で新規登録はさせない
+    if( is_user_logged_in() ){
+        return;
+    }
+
+    //POSTが無いなら実行しない
+    if( empty($_POST) ){
+        return;
+    }
+
+    //エラーメッセージを定義
+    global $register_error;
+    $register_error = "";
+    $br = "<br>";
+
+    //未入力チェック
+    if( empty($_POST['register_id']) ){
+        $register_error .= "ユーザーIDが入力されていません{$br}";
+    }
+    if( empty($_POST['register_name']) ){
+        $register_error .= "ユーザー名が入力されていません{$br}";
+    }
+    if( empty($_POST['register_pass']) ){
+        $register_error .= "パスワードが入力されていません{$br}";
+    }
+    if( empty($_POST['register_email']) ){
+        $register_error .= "メールアドレスが入力されていません{$br}";
+    }
+
+    //未入力があれば処理を終了
+    if( !empty($register_error) ){
+        return;
+    }
+
+    //重複チェック　…ここではユーザーIDとメールアドレスは重複を認めない
+    //指定されたユーザーIDを持つユーザーが存在する
+    if( get_user_by('login', $_POST['register_id']) ){
+        $register_error .= "そのユーザーIDは既に使われています{$br}";
+    }
+    if( get_user_by('email', $_POST['register_email']) ){
+        $register_error .= "そのメールアドレスは既に登録されています{$br}";
+    }
+
+    //重複があれば処理を終了
+    if( !empty($register_error) ){
+        return;
+    }
+
+    //新規ユーザー情報を配列に格納
+    $new_user = array(
+        'user_login' => $_POST['register_id'],      //ログインid
+        'user_pass' => $_POST['register_pass'],     //パスワード
+        'user_nicename' => $_POST['register_id'],   //URL用のユーザー名
+        'display_name' => $_POST['register_name'],  //表示名
+        'user_email' => $_POST['register_email'],   //メールアドレス
+        'user_registered' => date('Y-m-d H:i:s'),   //登録日
+        'role' => 'contributor',                    //権限
+    );
+    
+    //ユーザー登録
+    $registed = wp_insert_user( $new_user );
+
+    //エラーが発生した場合
+    if( is_wp_error($registed) ){
+        $register_error .= "登録時にエラーが発生しました{$br}";
+        $register_error .= $registed->get_error_messages();
+        return;
+    }
+
+    //登録したユーザーでログイン状態にする
+    //ログイン情報を定義
+    $login_user = array(
+        'user_login' => $new_user['user_login'],
+        'user_password' => $new_user['user_pass'],
+        'remember' => true,
+    );
+    //ログイン実行
+    wp_signon( $login_user, false );
+
+    //トップに移動させる
+    wp_safe_redirect( home_url() );
+    exit;
+}
+add_action( 'template_redirect', 'user_register_init' );
+
 ?>
