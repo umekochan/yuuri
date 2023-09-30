@@ -168,9 +168,6 @@ function post_init() {
     //投稿を実行
     $post_id = wp_insert_post($new_post, true);
 
-    //debug
-    $post_error['id'] = $post_id;
-
     //エラー処理
     if( is_wp_error($post_id) ){
         $post_error = $post_id->errors;
