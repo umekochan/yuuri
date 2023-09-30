@@ -314,4 +314,12 @@ function user_edit_init() {
 }
 add_action( 'template_redirect', 'user_edit_init' );
 
+function deleteTemplate($template) {
+    if( !is_page( 'post-delete' )){
+        return $template;
+    }
+
+    return get_theme_file_path( 'page-post.php' );
+}
+add_filter( 'page_template', 'deleteTemplate' );
 ?>
