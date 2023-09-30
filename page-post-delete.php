@@ -1,12 +1,12 @@
 <?php get_header(); ?>
 <main>
     <h1>投稿削除</h1>
-    <?php if ( !empty( $post_error ) ): ?>
-        <!-- エラー発生時にメッセージを表示 -->
-        <p><?php echo $post_error; ?></p>
+    <?php
+        global $message;
+        if( !empty($message) ):
+    ?>
+        <p><?= $message ?></p>
     <?php endif; ?>
-    <form action="<?php the_permalink(); ?>" method="post">
-
-    </form>
+    <p><a href="<?= home_url(); ?>">トップに戻る</a></p>
 </main>
 <?php get_footer(); ?>
