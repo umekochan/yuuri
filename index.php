@@ -11,7 +11,7 @@
                     $author = get_userdata( $post->post_author );
                     if( get_current_user_id() === $author->ID ):
                 ?>
-                <p><button type="button"><a href="/page_post-delete/"></a>削除</button></p>
+                    <p><button type="button"><a href="/page_post-delete/"></a>削除</button></p>
                 <?php endif; ?>
             </article>
         <?php endwhile; ?>

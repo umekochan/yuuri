@@ -314,12 +314,32 @@ function user_edit_init() {
 }
 add_action( 'template_redirect', 'user_edit_init' );
 
-function deleteTemplate($template) {
-    if( !is_page( 'post-delete' )){
-        return $template;
+function post_delete() {
+    //削除ページでなければ削除する
+    if( !$is_page() ){
+        return;
+    }
+    if( !is_user_logged_in() ){
+        return;
     }
 
-    return get_theme_file_path( 'page-post.php' );
+    $post_id;
+    if( $post_id ){
+        $results =  wp_delete_post( $post_id );
+    }
+
+    //投稿が存在しない
+    if( $post_id === null ){
+
+    //削除失敗
+    }elseif( $post_id === false ){
+
+    //削除成功
+    }elseif( $results->ID === $post_id ){
+        wp_safe_redirect( home_url() );
+        exit;
+    }
 }
-add_filter( 'page_template', 'deleteTemplate' );
+add_action( 'template_redirect', 'post-delete' );
+
 ?>
