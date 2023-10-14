@@ -238,6 +238,7 @@ function user_register_init() {
         'user_email' => $_POST['register_email'],   //メールアドレス
         'user_registered' => date('Y-m-d H:i:s'),   //登録日
         'role' => 'contributor',                    //権限
+        'meta_input' => array('school_name' => $_POST['school_name']),
     );
     
     //ユーザー登録
@@ -303,6 +304,9 @@ function user_edit_init() {
     }
     if( !empty($_POST['update_email']) ){
         $user->user_email = $_POST['update_email'];
+    }
+    if( !empty($_POST['update_school_name']) ){
+        $user->meta_input = array('school_name' => $_POST['update_school_name']);
     }
 
     global $user_update_result;

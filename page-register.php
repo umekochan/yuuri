@@ -26,6 +26,10 @@
             <label for="register_email">メールアドレス</label>
             <input type="email" name="register_email" id="register_email" required>
         </div>
+        <div class="wrap">
+            <label for="school_name">学校名</label>
+            <input type="text" name="school_name" id="school_name" required>
+        </div>
         <button type="submit">登録</button>
     </form>
 </main>
