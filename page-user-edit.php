@@ -23,6 +23,10 @@
             <input type="email" name="update_email" id="update_email" value="<?= $edit_user->user_email; ?>">
             <p>dev-email@wpengine.local</p>
         </div>
+        <div class="wrap">
+            <label for="update_school_name">学校名</label>
+            <input type="text" name="update_school_name" id="update_school_name" value="<?= get_user_meta($edit_user->ID, 'school_name', true); ?>" required>
+        </div>
         <button type="submit">変更</button>
     </form>
     <?php elseif( is_numeric($user_update_result) ): $user_update_result = null; ?>
